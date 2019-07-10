@@ -31,13 +31,11 @@ workflows:
           filters:
             tags:
               only: /.*/
-            branches:
-              only: /.*/
       - tags:
           filters:
             tags:
               only: /^v.*/
             branches:
-              only: /.*/
+              ignore: /.*/
           requires:
             - always
