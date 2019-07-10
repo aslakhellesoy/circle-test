@@ -30,7 +30,7 @@ workflows:
       - always:
           filters:
             tags:
-              only: /.*/
+              only: /^v.*/
       - tags:
           filters:
             tags:
