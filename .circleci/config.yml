@@ -8,4 +8,5 @@ jobs:
     steps:
       - run:
           name: always
-          command: echo "always: ${CIRCLE_BRANCH}"
+          command: |
+            echo "always: ${CIRCLE_BRANCH}"
