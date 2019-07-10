@@ -29,6 +29,8 @@ workflows:
           filters:
             tags:
               only: /.*/
+            branches:
+              only: /.*/
       - tags:
           filters:
             tags:
