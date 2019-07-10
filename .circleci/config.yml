@@ -9,4 +9,23 @@ jobs:
       - run:
           name: always
           command: |
-            echo "always: ${CIRCLE_BRANCH}"
+            echo "CIRCLE_BRANCH=${CIRCLE_BRANCH}"
+
+  tags:
+    docker:
+      - image: alpine
+    working_directory: ~/repo
+    steps:
+      - run:
+          name: tags
+          command: |
+            echo "CIRCLE_TAG=${CIRCLE_TAG}"
+
+workflows:
+  version: 2
+  all:
+    jobs:
+      - always
+      - tags:
+          requires:
+            - always
