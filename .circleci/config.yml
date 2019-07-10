@@ -1,4 +1,5 @@
-version: 2
+# https://discuss.circleci.com/t/tag-workflow-doesnt-work-despite-similar-setup-on-other-project-working/30514/8
+version: 2.1
 
 jobs:
   versions:
