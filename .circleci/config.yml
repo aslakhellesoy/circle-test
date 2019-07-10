@@ -27,5 +27,8 @@ workflows:
     jobs:
       - always
       - tags:
+          filters:
+            tags:
+              only: /^v.*/
           requires:
             - always
