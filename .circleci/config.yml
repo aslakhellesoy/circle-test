@@ -1,0 +1,11 @@
+version: 2.1
+
+jobs:
+  always:
+    docker:
+      - image: alpine
+    working_directory: ~/repo
+    steps:
+      - run:
+          name: always
+          command: echo "always: ${CIRCLE_BRANCH}"
