@@ -26,6 +26,9 @@ workflows:
   all:
     jobs:
       - always
+          filters:
+            tags:
+              only: /.*/
       - tags:
           filters:
             tags:
