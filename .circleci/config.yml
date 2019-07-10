@@ -1,41 +1,99 @@
 version: 2
 
 jobs:
-  always:
+  versions:
     docker:
       - image: alpine
     working_directory: ~/repo
     steps:
-      - checkout
       - run:
-          name: always
+          name: versions
           command: |
             echo "CIRCLE_BRANCH=${CIRCLE_BRANCH}"
 
-  tags:
+  install:
     docker:
       - image: alpine
     working_directory: ~/repo
     steps:
-      - checkout
       - run:
-          name: tags
+          name: install
+          command: |
+            echo "CIRCLE_TAG=${CIRCLE_TAG}"
+
+  test:
+    docker:
+      - image: alpine
+    working_directory: ~/repo
+    steps:
+      - run:
+          name: test
+          command: |
+            echo "CIRCLE_TAG=${CIRCLE_TAG}"
+
+  build:
+    docker:
+      - image: alpine
+    working_directory: ~/repo
+    steps:
+      - run:
+          name: build
+          command: |
+            echo "CIRCLE_TAG=${CIRCLE_TAG}"
+
+  deploy-pre:
+    docker:
+      - image: alpine
+    working_directory: ~/repo
+    steps:
+      - run:
+          name: deploy-pre
           command: |
             echo "CIRCLE_TAG=${CIRCLE_TAG}"
 
 workflows:
   version: 2
-  all:
+  build-test-deploy:
     jobs:
-      - always:
+      - versions
+      - install:
           filters:
             tags:
-              only: /^v.*/
-      - tags:
+              only: /v.*/
+      - test:
+          requires:
+            - install
           filters:
             tags:
-              only: /^v.*/
+              only: /v.*/
+      - build:
+          requires:
+            - install
+          filters:
+            tags:
+              only: /v.*/
+      - deploy-pre:
+          requires:
+            - build
+            - test
+          filters:
             branches:
               ignore: /.*/
+            tags:
+              only: /v.*/
+      - deploy-normal:
           requires:
-            - always
+            - deploy-pre
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v(\d)+(\.(\d)+)+/
+      - deploy-test:
+          requires:
+            - deploy-pre
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /(v(\d)+(\.(\d)+)+)-(alpha|beta)/
