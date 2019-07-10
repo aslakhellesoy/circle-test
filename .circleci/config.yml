@@ -6,6 +6,7 @@ jobs:
       - image: alpine
     working_directory: ~/repo
     steps:
+      - checkout
       - run:
           name: always
           command: |
@@ -16,6 +17,7 @@ jobs:
       - image: alpine
     working_directory: ~/repo
     steps:
+      - checkout
       - run:
           name: tags
           command: |
