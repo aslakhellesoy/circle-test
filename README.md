@@ -1,2 +1,3 @@
 # circle-test
-Just trying uot some CircleCI stuff
+
+Just trying out some CircleCI stuff
