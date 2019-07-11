@@ -29,12 +29,17 @@ workflows:
   build-test-deploy:
     jobs:
       - build
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              only: /.*/
       - deploy:
-          requires:
-            - build
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /v.*/
+          requires:
+            - build
 
