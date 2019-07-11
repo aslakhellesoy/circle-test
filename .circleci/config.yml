@@ -33,6 +33,7 @@ workflows:
             tags:
               only: /.*/
       - deploy:
+          type: approval
           filters:
             branches:
               ignore: /.*/
