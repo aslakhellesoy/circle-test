@@ -30,8 +30,6 @@ workflows:
     jobs:
       - build:
           filters:
-            branches:
-              only: /.*/
             tags:
               only: /.*/
       - deploy:
