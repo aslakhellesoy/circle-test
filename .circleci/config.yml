@@ -29,16 +29,7 @@ workflows:
   build-test-deploy:
     jobs:
       - build:
-          filters:
-            tags:
-              only: /.*/
       - deploy:
-          type: approval
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /v.*/
           requires:
             - build
 
