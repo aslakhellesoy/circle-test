@@ -4,36 +4,6 @@
 version: 2.1
 
 jobs:
-  versions:
-    docker:
-      - image: alpine
-    working_directory: ~/repo
-    steps:
-      - run:
-          name: versions
-          command: |
-            echo "CIRCLE_BRANCH=${CIRCLE_BRANCH}"
-
-  install:
-    docker:
-      - image: alpine
-    working_directory: ~/repo
-    steps:
-      - run:
-          name: install
-          command: |
-            echo "CIRCLE_TAG=${CIRCLE_TAG}"
-
-  test:
-    docker:
-      - image: alpine
-    working_directory: ~/repo
-    steps:
-      - run:
-          name: test
-          command: |
-            echo "CIRCLE_TAG=${CIRCLE_TAG}"
-
   build:
     docker:
       - image: alpine
@@ -42,81 +12,27 @@ jobs:
       - run:
           name: build
           command: |
-            echo "CIRCLE_TAG=${CIRCLE_TAG}"
+            echo "CIRCLE_BRANCH=${CIRCLE_BRANCH} CIRCLE_TAG=${CIRCLE_TAG}"
 
-  deploy-pre:
+  deploy:
     docker:
       - image: alpine
     working_directory: ~/repo
     steps:
       - run:
-          name: deploy-pre
+          name: deploy
           command: |
-            echo "CIRCLE_TAG=${CIRCLE_TAG}"
-
-  deploy-normal:
-    docker:
-      - image: alpine
-    working_directory: ~/repo
-    steps:
-      - run:
-          name: deploy-normal
-          command: |
-            echo "CIRCLE_TAG=${CIRCLE_TAG}"
-
-  deploy-test:
-    docker:
-      - image: alpine
-    working_directory: ~/repo
-    steps:
-      - run:
-          name: deploy-test
-          command: |
-            echo "CIRCLE_TAG=${CIRCLE_TAG}"
+            echo "CIRCLE_BRANCH=${CIRCLE_BRANCH} CIRCLE_TAG=${CIRCLE_TAG}"
 
 workflows:
   version: 2
   build-test-deploy:
     jobs:
-      - versions
-      - install:
-          filters:
-            tags:
-              only: /v.*/
-      - test:
-          requires:
-            - install
-          filters:
-            tags:
-              only: /v.*/
-      - build:
-          requires:
-            - install
-          filters:
-            tags:
-              only: /v.*/
-      - deploy-pre:
+      - build
+      - deploy:
           requires:
             - build
-            - test
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /v.*/
-      - deploy-normal:
-          requires:
-            - deploy-pre
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /v(\d)+(\.(\d)+)+/
-      - deploy-test:
-          requires:
-            - deploy-pre
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /(v(\d)+(\.(\d)+)+)-(alpha|beta)/
+
