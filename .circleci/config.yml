@@ -1,7 +1,7 @@
 # https://discuss.circleci.com/t/tag-workflow-doesnt-work-despite-similar-setup-on-other-project-working/30514/8
 # https://discuss.circleci.com/t/workflow-is-not-triggered-by-tag-push/30498
 # https://circleci.com/docs/api/#trigger-a-new-build-with-a-branch
-version: 2
+version: 2.1
 
 jobs:
   versions:
